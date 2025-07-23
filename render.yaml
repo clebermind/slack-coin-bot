@@ -1,0 +1,14 @@
+services:
+  - type: worker
+    name: slack-coin-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python coin_bot.py
+    envVars:
+      - key: SLACK_BOT_TOKEN
+        sync: false
+      - key: SLACK_APP_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
