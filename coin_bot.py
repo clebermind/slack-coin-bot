@@ -30,5 +30,6 @@ def handle_message(event, say):
             )
 
 if __name__ == "__main__":
+    print("✅ Coin Bot is connected and listening via Socket Mode!")
     handler = SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"])
     handler.start()
