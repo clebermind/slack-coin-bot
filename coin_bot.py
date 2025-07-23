@@ -7,13 +7,10 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 from dotenv import load_dotenv
 from db import add_coin, get_user_coins
 
-# Load environment variables
 load_dotenv()
 
-# Initialize Slack app
 app = App(token=os.environ["SLACK_BOT_TOKEN"])
 
-# Handle messages with ++ or thank
 @app.event("message")
 def handle_message(event, say):
     text = event.get("text", "")
@@ -33,7 +30,6 @@ def handle_message(event, say):
                 thread_ts=event["ts"]
             )
 
-# Dummy Flask app to bind a port (required for Web Service)
 flask_app = Flask(__name__)
 
 @flask_app.route("/")
@@ -48,4 +44,6 @@ def run_bot():
 
 if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
+
+    # Start dummy Flask server to bind to the port Render expects
     flask_app.run(host="0.0.0.0", port=10000)
