@@ -1,5 +1,5 @@
 services:
-  - type: worker
+  - type: web
     name: slack-coin-bot
     env: python
     plan: free
