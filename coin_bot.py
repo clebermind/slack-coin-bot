@@ -6,13 +6,14 @@ from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from dotenv import load_dotenv
 from db import add_coin, get_user_coins
+from slack_sdk.errors import SlackApiError
 
 load_dotenv()
 
 app = App(token=os.environ["SLACK_BOT_TOKEN"])
 
 @app.event("message")
-def handle_message(event, say):
+def handle_message(event, say, client):
     text = event.get("text", "")
     sender = event.get("user", "")
 
@@ -20,11 +21,15 @@ def handle_message(event, say):
         return
 
     mentions = re.findall(r"<@(\w+)>", text)
+    sender_name = get_username_by_id(client, sender)
 
     for user_id in mentions:
         if user_id != sender and re.search(r"\b\+\+|\bthank", text.lower()):
-            add_coin(sender, user_id, message=text)
+            receiver_name = get_username_by_id(client, user_id)
+
+            add_coin(sender, sender_name, user_id, receiver_name, message=text)
             total = get_user_coins(user_id)
+            
             say(
                 text=f"<@{user_id}> now has {total} coin(s)! 🎉",
                 thread_ts=event["ts"]
@@ -35,6 +40,13 @@ flask_app = Flask(__name__)
 @flask_app.route("/")
 def health_check():
     return "Coin bot is running!", 200
+
+def get_username_by_id(client, user_id):
+    try:
+        user_info = client.users_info(user=user_id)
+        return user_info["user"]["name"]
+    except SlackApiError:
+        return user_id  # fallback
 
 # Start Slack bot in separate thread
 def run_bot():

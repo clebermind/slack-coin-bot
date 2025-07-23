@@ -17,9 +17,9 @@ def get_or_create_user(slack_user_id, slack_username):
         """, (slack_user_id,))
         return cur.fetchone()
 
-def add_coin(giver_id, receiver_id, message=""):
-    giver = get_or_create_user(giver_id)
-    receiver = get_or_create_user(receiver_id)
+def add_coin(giver_id, giver_name, receiver_id, receiver_name, message):
+    giver = get_or_create_user(giver_id, giver_name)
+    receiver = get_or_create_user(receiver_id, receiver_name)
 
     if not giver or not receiver:
         raise ValueError("Unable to find or create user(s).")
