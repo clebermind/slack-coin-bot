@@ -24,7 +24,7 @@ def handle_message(event, say, client):
     sender_name = get_username_by_id(client, sender)
 
     for user_id in mentions:
-        if user_id != sender and re.search(r"\b\+\+|\bthank", text.lower()):
+        if user_id != sender and ("++" in text or "thank" in text.lower()):
             receiver_name = get_username_by_id(client, user_id)
 
             add_coin(sender, sender_name, user_id, receiver_name, message=text)
