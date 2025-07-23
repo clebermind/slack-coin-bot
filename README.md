@@ -2,11 +2,15 @@
 
 A simple and fun Slack bot that lets users give each other "coins" by typing `++` or `thanks` when mentioning someone — like this:
 
-@cleber.mendes ++
+```plaintext
+@cleber.mendes++
+```
 
 The bot tracks coin totals, logs transactions in a PostgreSQL database, and replies in the thread with the updated balance:
 
+```plaintext
 @cleber.mendes now has 5 coin(s)! 🎉
+```
 
 ## 🚀 Features
 
@@ -31,12 +35,15 @@ The bot tracks coin totals, logs transactions in a PostgreSQL database, and repl
 
 ## 📂 Project Structure
 
+```plaintext
 .
-├── coin_bot.py # Main bot logic (Slack event handler)
-├── db.py # Database connection and queries
-├── requirements.txt # Python dependencies
-├── render.yaml # Render deployment config
-└── .env.example # Environment variable template
+├── coin_bot.py        # Main bot logic (Slack event handler)
+├── db.py              # Database connection and queries
+├── requirements.txt   # Python dependencies
+├── render.yaml        # Render deployment config
+├── .env.example       # Environment variable template
+└── schema.sql         # PostgreSQL table and trigger definitions
+```
 
 ---
 
@@ -109,7 +116,7 @@ Before running the bot, you need to create the required tables in your PostgreSQ
 You can do this by running the [`schema.sql`](./schema.sql) script:
 
 ```bash
-psql "your_connection_string" < schema.sql
+psql "your_connection_string" < schema.sql 
 ```
 
 ---
