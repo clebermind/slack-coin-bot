@@ -14,17 +14,22 @@ app = App(token=os.environ["SLACK_BOT_TOKEN"])
 
 @app.event("message")
 def handle_message(event, say, client):
+    print("Handling message started.")
     text = event.get("text", "")
     sender = event.get("user", "")
 
     if sender is None or event.get("subtype") is not None:
-        return
+       print("Sender is none") 
+       return
 
     mentions = re.findall(r"<@(\w+)>", text)
     sender_name = get_username_by_id(client, sender)
 
+    print("sender name: {sender_name}")
+
     for user_id in mentions:
         if user_id != sender and ("++" in text or "thank" in text.lower()):
+            print("sender is not the receiver and a coin was given")
             receiver_name = get_username_by_id(client, user_id)
 
             add_coin(sender, sender_name, user_id, receiver_name, message=text)
@@ -34,6 +39,7 @@ def handle_message(event, say, client):
                 text=f"<@{user_id}> now has {total} coin(s)! 🎉",
                 thread_ts=event["ts"]
             )
+            print("All done!") 
 
 flask_app = Flask(__name__)
 
