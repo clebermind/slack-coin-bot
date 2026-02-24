@@ -103,5 +103,4 @@ if __name__ == "__main__":
     
     logger.info("Starting Flask health check server on port 10000...")
     # Start Flask server to keep Render happy
-    flask_app.run(host="0.0.0.0", port=10000)
-
+    flask_app.run(host="0.0.0.0", port=10000, debug=False, use_reloader=False)
